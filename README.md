@@ -8,7 +8,7 @@
 [![Platform](https://img.shields.io/badge/Platform-PC-58a6ff?style=flat)](#)
 [![Input](https://img.shields.io/badge/Input_System-New-a78bfa?style=flat)](#)
 
-> A fully playable 2D Flappy Bird clone — my first Unity project, built while preparing for a Game Jam @ Birzeit University 🇵🇸
+> A fully playable 2D Flappy Bird clone - my first Unity project.
 
 ---
 
