@@ -8,6 +8,8 @@
 [![Platform](https://img.shields.io/badge/Platform-PC-58a6ff?style=flat)](#)
 [![Input](https://img.shields.io/badge/Input_System-New-a78bfa?style=flat)](#)
 
+[![Download](https://img.shields.io/badge/Download-EXE-ff6b6b?style=flat&logo=windows&logoColor=white)](https://github.com/Holmes-99/flappy-bird-unity/releases/latest)
+
 > A fully playable 2D Flappy Bird clone - my first Unity project.
 
 ---
