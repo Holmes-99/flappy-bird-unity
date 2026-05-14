@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🐦 Flappy Bird — Unity 2D Clone
+# 🐦 Flappy Bird - Unity 2D Clone
 
 [![Unity](https://img.shields.io/badge/Unity-2D-000000?style=flat&logo=unity&logoColor=white)](https://unity.com/)
 [![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/)
@@ -11,8 +11,8 @@
 > A fully playable 2D Flappy Bird clone - my first Unity project.
 
 ---
-**##Download & Play the game
-**
+Download & Play the game
+
 [![Download](https://img.shields.io/badge/Download-EXE-ff6b6b?style=flat&logo=windows&logoColor=white)](https://github.com/Holmes-99/flappy-bird-unity/releases/latest)
 ![Gameplay](Assets/Screenshots/gameplay.gif)
 
