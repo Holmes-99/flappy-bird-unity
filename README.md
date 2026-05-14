@@ -12,7 +12,6 @@
 
 ---
 [![Download](https://img.shields.io/badge/Download-EXE-ff6b6b?style=flat&logo=windows&logoColor=white)](https://github.com/Holmes-99/flappy-bird-unity/releases/latest)
-
 ![Gameplay](Assets/Screenshots/gameplay.gif)
 
 </div>
