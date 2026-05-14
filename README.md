@@ -209,7 +209,7 @@ git clone https://github.com/Holmes-99/flappy-bird-unity
 2. Open `Assets/Scenes/MainScene`
 3. Press **▶ Play**
 
-> Requires **Unity 2022.3+** — the New Input System package is already included in `Packages/`
+> Requires **Unity 2022.3+** - the New Input System package is already included in `Packages/`
 
 ---
 
@@ -237,7 +237,7 @@ git clone https://github.com/Holmes-99/flappy-bird-unity
 
 <div align="center">
 
-**Shatha Abualrob** — 3rd year Computer Engineering @ Birzeit University 🇵🇸
+**Shatha Abualrob** - 3rd year Computer Engineering @ Birzeit University 🇵🇸
 
 *Learning Unity & C# | Preparing for Game Jam hackathon*
 
