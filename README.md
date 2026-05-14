@@ -1,15 +1,32 @@
+<div align="center">
+
 # 🐦 Flappy Bird — Unity 2D Clone
 
-![Unity](https://img.shields.io/badge/Unity-2D-000000?style=flat&logo=unity&logoColor=white)
-![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=csharp&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Complete-3fb950?style=flat)
-![Platform](https://img.shields.io/badge/Platform-PC-58a6ff?style=flat)
-![Input](https://img.shields.io/badge/Input-New_Input_System-a78bfa?style=flat)
+[![Unity](https://img.shields.io/badge/Unity-2D-000000?style=flat&logo=unity&logoColor=white)](https://unity.com/)
+[![C#](https://img.shields.io/badge/C%23-239120?style=flat&logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/)
+[![Status](https://img.shields.io/badge/Status-Complete-3fb950?style=flat)](#)
+[![Platform](https://img.shields.io/badge/Platform-PC-58a6ff?style=flat)](#)
+[![Input](https://img.shields.io/badge/Input_System-New-a78bfa?style=flat)](#)
 
-> A fully playable 2D Flappy Bird clone built with Unity and C# — my first game development project,
-> created while preparing for a Game Jam hackathon at Birzeit University 🇵🇸
+> A fully playable 2D Flappy Bird clone — my first Unity project, built while preparing for a Game Jam @ Birzeit University 🇵🇸
 
-![Gameplay Screenshot](Assets/Screenshots/preview.png)
+---
+
+![Gameplay](Assets/Screenshots/gameplay.gif)
+
+</div>
+
+---
+
+## 📖 Table of Contents
+
+- [How to Play](#-how-to-play)
+- [Features](#-features)
+- [Architecture](#-architecture--how-it-works)
+- [Project Structure](#-project-structure)
+- [How to Run](#%EF%B8%8F-how-to-run)
+- [What I Learned](#-what-i-learned)
+- [About Me](#-about-me)
 
 ---
 
@@ -18,69 +35,83 @@
 | Action | Control |
 |--------|---------|
 | Flap upward | `Space` |
-| Restart after game over | Click the restart button |
+| Restart | Click restart button on game over screen |
 
-- Fly through the gaps between pipes to score points
-- Hit a pipe or the ground → game over
-- Each pipe pair you clear = **+1 score**
+- Fly through the gaps between the green pipes
+- Hit a pipe or the ground → **game over**
+- Each pipe pair cleared = **+1 score**
 
 ---
 
 ## ✨ Features
 
-- **Custom pixel-art duck sprite** — original white pixel bird with orange beak
-- **Procedural pipe spawning** — pipes appear at randomized heights every 3 seconds
-- **Physics-based movement** — real gravity using Unity's `Rigidbody2D`
-- **Live score counter** — updates in real-time using Unity UI Text
-- **Sound effects** — game over sound on collision, score sound on passing a pipe
-- **Game over screen** — with a restart button that reloads the scene
-- **New Input System** — uses Unity's modern `UnityEngine.InputSystem`
+- 🐤 Custom pixel-art duck sprite
+- 🌿 Procedural pipe spawning at randomized heights
+- ⚙️ Physics-based gravity using `Rigidbody2D`
+- 🔢 Live score counter via Unity UI
+- 🔊 Sound effects — score sound + game over sound
+- 💀 Game over screen with restart button
+- ⌨️ Unity **New Input System** for keyboard input
 
 ---
 
 ## 🏗️ Architecture & How It Works
 
-The game is split into **5 scripts**, each with a single responsibility:
+The game uses **5 scripts**, each with one job:
 
-### `BirdScript.cs` — Player Controller
-Handles all bird logic: input, physics, death, and audio.
+<details>
+<summary><b>🐦 BirdScript.cs — Player Controller</b></summary>
+
+<br>
+
+Handles input, physics, death detection, and audio.
 
 ```csharp
-// Space key detected via Unity's New Input System
+// Space key via Unity's New Input System
 if (Keyboard.current.spaceKey.wasPressedThisFrame && birdIsAlive)
     Myrigid.linearVelocity = Vector2.up * flashspeed;
 
-// On any collision → bird dies, plays sound, triggers game over
+// On collision → bird dies, sound plays, game over triggers
 private void OnCollisionEnter2D(Collision2D collision)
 {
     birdIsAlive = false;
-    audioSource.Play(); // plays gameOverSound from Resources/
+    audioSource.Play(); // gameOverSound loaded from Resources/
     logic.gameOver();
 }
 ```
 
-**Key design choice:** Audio clips are loaded at runtime from `Assets/Resources/` using `Resources.Load<AudioClip>()`, so no manual drag-and-drop in the Inspector is needed.
+**Design note:** Audio is loaded at runtime via `Resources.Load<AudioClip>()` — no manual Inspector drag-and-drop needed.
 
----
+</details>
 
-### `PipeSpawning.cs` — Procedural Generation
-Spawns a new pipe prefab every `spawnRate` seconds at a random Y position.
+<details>
+<summary><b>🌿 PipeSpawning.cs — Procedural Generation</b></summary>
+
+<br>
+
+Spawns a pipe prefab every `spawnRate` seconds at a random Y position.
 
 ```csharp
 void spawn()
 {
-    float lowestPoint  = transform.position.y - heightOffset; // -5.7
-    float highestPoint = transform.position.y + heightOffset; // +5.7
-    Instantiate(Pipe, new Vector3(transform.position.x, Random.Range(lowestPoint, highestPoint), 0), transform.rotation);
+    float lowestPoint  = transform.position.y - heightOffset;
+    float highestPoint = transform.position.y + heightOffset;
+    Instantiate(Pipe,
+        new Vector3(transform.position.x, Random.Range(lowestPoint, highestPoint), 0),
+        transform.rotation);
 }
 ```
 
-The spawner acts as a **factory** — it doesn't know what the pipe does, it just creates them at timed intervals with randomized vertical positions.
+Acts as a **factory** — creates pipes at timed intervals with randomized vertical positions, keeping every run unique.
 
----
+</details>
 
-### `PipeMoveScript.cs` — Pipe Movement & Cleanup
-Moves every pipe leftward at a constant speed, then destroys it when it leaves the screen.
+<details>
+<summary><b>➡️ PipeMoveScript.cs — Movement & Cleanup</b></summary>
+
+<br>
+
+Moves every pipe leftward at constant speed, destroys it when off-screen.
 
 ```csharp
 void Update()
@@ -91,12 +122,16 @@ void Update()
 }
 ```
 
-Using `Time.deltaTime` makes the movement **frame-rate independent** — the game runs at the same speed on any machine.
+`Time.deltaTime` makes movement **frame-rate independent** — runs identically on any machine.
 
----
+</details>
 
-### `PipeMiddle.cs` — Score Trigger
-An invisible trigger collider sits in the gap between each pipe pair. When the bird (Layer 3) passes through it, the score increases.
+<details>
+<summary><b>🎯 PipeMiddle.cs — Score Trigger</b></summary>
+
+<br>
+
+An invisible trigger collider sits in the gap between each pipe pair. When the bird passes through it, score increases.
 
 ```csharp
 private void OnTriggerEnter2D(Collider2D collision)
@@ -104,28 +139,32 @@ private void OnTriggerEnter2D(Collider2D collision)
     if (collision.gameObject.layer == 3) // Bird layer
     {
         logic.addScore(1);
-        audioSource.Play(); // plays scoreSound
+        audioSource.Play(); // scoreSound
     }
 }
 ```
 
-This is the classic **invisible trigger zone** pattern used in 2D games to detect "passing through" a gap.
+Classic **invisible trigger zone** pattern — detects "passing through" without any visual element.
 
----
+</details>
 
-### `LogicManader.cs` — Game State Manager
-Central controller for score, UI, game over, and scene reload.
+<details>
+<summary><b>🧠 LogicManader.cs — Game State Manager</b></summary>
+
+<br>
+
+Central controller for score, UI updates, game over, and restart.
 
 ```csharp
 public void addScore(int scoreToAdd)
 {
     playerScore += scoreToAdd;
-    scoreText.text = playerScore.ToString(); // updates UI instantly
+    scoreText.text = playerScore.ToString(); // live UI update
 }
 
 public void gameOver()
 {
-    gameOverScreen.SetActive(true); // shows the game over panel
+    gameOverScreen.SetActive(true); // shows game over panel
 }
 
 public void restartGame()
@@ -134,6 +173,8 @@ public void restartGame()
 }
 ```
 
+</details>
+
 ---
 
 ## 📁 Project Structure
@@ -141,54 +182,67 @@ public void restartGame()
 ```
 Assets/
 ├── Resources/
-│   ├── gameOverSound.wav     # loaded at runtime by BirdScript
-│   └── scoreSound.wav        # loaded at runtime by PipeMiddle
+│   ├── gameOverSound.wav     ← loaded at runtime by BirdScript
+│   └── scoreSound.wav        ← loaded at runtime by PipeMiddle
 ├── Scenes/
-│   └── MainScene             # the only scene
+│   └── MainScene
 ├── Scripts/
-│   ├── BirdScript.cs         # player input, physics, death
-│   ├── PipeSpawning.cs       # procedural pipe factory
-│   ├── PipeMoveScript.cs     # pipe movement + cleanup
-│   ├── PipeMiddle.cs         # score trigger zone
-│   └── LogicManader.cs       # score, UI, game over, restart
+│   ├── BirdScript.cs         ← player input, physics, death
+│   ├── PipeSpawning.cs       ← procedural pipe factory
+│   ├── PipeMoveScript.cs     ← pipe movement + cleanup
+│   ├── PipeMiddle.cs         ← score trigger zone
+│   └── LogicManader.cs       ← score, UI, game over, restart
 ├── Sprites/
-│   └── minecraft_pi...       # pixel duck + pipe sprites
+│   └── minecraft_pi...       ← pixel duck + pipe sprites
 └── Screenshots/
-    └── preview.png           # used in this README
+    └── gameplay.gif          ← shown at top of this README
 ```
 
 ---
 
 ## ▶️ How to Run
 
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/Holmes-99/flappy-bird-unity
-   ```
-2. Open **Unity Hub** → click **Add** → select the cloned folder
-3. Open `Assets/Scenes/MainScene`
-4. Press **Play ▶️** in the Unity Editor
+```bash
+git clone https://github.com/Holmes-99/flappy-bird-unity
+```
 
-> Requires **Unity 2022.3+** and the **New Input System** package (already in `Packages/`)
+1. Open **Unity Hub** → **Add** → select the cloned folder
+2. Open `Assets/Scenes/MainScene`
+3. Press **▶ Play**
+
+> Requires **Unity 2022.3+** — the New Input System package is already included in `Packages/`
 
 ---
 
 ## 🧠 What I Learned
 
-- Setting up a **2D Unity project** from scratch (physics, colliders, prefabs)
-- Using Unity's **New Input System** for keyboard detection
+<details>
+<summary><b>Click to expand</b></summary>
+
+<br>
+
+- Setting up a **2D Unity project** from scratch — physics, colliders, prefabs
+- Using Unity's **New Input System** for keyboard input
 - **Procedural spawning** with randomized parameters
-- **Frame-rate independent movement** with `Time.deltaTime`
-- Loading audio assets at **runtime** with `Resources.Load`
-- Managing **game state** across multiple scripts via a central manager
-- **Scene management** for restarting the game
+- **Frame-rate independent movement** using `Time.deltaTime`
+- Loading audio at **runtime** with `Resources.Load`
+- The **invisible trigger zone** pattern for detecting gap passes
+- Managing **game state** across scripts via a central manager
+- **Scene reloading** for clean game restarts
+
+</details>
 
 ---
 
 ## 👩‍💻 About Me
 
-**Shatha Abualrob** — 3rd year Computer Engineering student at Birzeit University 🇵🇸  
-Currently learning Unity & C# | Preparing for Game Jam hackathon
+<div align="center">
 
-[![GitHub](https://img.shields.io/badge/GitHub-Holmes--99-181717?style=flat&logo=github)](https://github.com/Holmes-99)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Shatha_Abualrob-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/shatha-abualrub-632a05331)
+**Shatha Abualrob** — 3rd year Computer Engineering @ Birzeit University 🇵🇸
+
+*Learning Unity & C# | Preparing for Game Jam hackathon*
+
+[![GitHub](https://img.shields.io/badge/GitHub-Holmes--99-181717?style=flat&logo=github&logoColor=white)](https://github.com/Holmes-99)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Shatha_Abualrob-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/shatha-abualrub-632a05331)
+
+</div>
