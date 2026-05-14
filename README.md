@@ -193,7 +193,7 @@ Assets/
 │   ├── PipeMiddle.cs         ← score trigger zone
 │   └── LogicManader.cs       ← score, UI, game over, restart
 ├── Sprites/
-│   └── minecraft_pi...       ← pixel duck + pipe sprites
+│   └── minecraft_pi...       ← pixel chicken(minecraft theme) + pipe sprites
 └── Screenshots/
     └── gameplay.gif          ← shown at top of this README
 ```
